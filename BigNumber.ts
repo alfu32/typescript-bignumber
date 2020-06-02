@@ -1,9 +1,11 @@
-export const BIG_NUMBER_BASE = 1000;
+export const BIG_NUMBER_BASE = 256;
+
 export class BigNumber{
+
   public base = BIG_NUMBER_BASE;
   public numbers: Array<number> = new Array<number>();
   intermediate: Array<any> = [];
-  public static clone(): BigNumber{
+  public clone(): BigNumber{
     const n = new BigNumber(0);
     n.numbers = [...this.numbers];
     return n;
@@ -23,55 +25,16 @@ export class BigNumber{
       this.assign(n);
     }
   }
-  public add( n: number): BigNumber {
+  public add( n: number | BigNumber): BigNumber {
     let a = this.numbers;
-    let b = new BigNumber(n).numbers;
-    let result = new BigNumber(n);
-    let carry = 0;
-    let base = BIG_NUMBER_BASE;
-    let rest = 0;
-    let sum = 0;
-    let index = 0;
-    while (
-        (
-          carry !== 0
-          || a[index] !== undefined
-          || b[index] !== undefined
-        )
-      ) {
-      sum = ((a[index]!==undefined)?a[index]:0)
-        + ((b[index]!==undefined)?b[index]:0)
-        + carry;
-      // if( a[index] ) {
-      //   if( b[index] ) {
-      //     sum = a[index] + b[index] + carry;
-      //   } else {
-      //     sum = a[index] + carry;
-      //   } 
-      // } else {
-      //   if( b[index] ) {
-      //     sum = b[index] + carry;
-      //   } else {
-      //     sum = carry;
-      //   }
-      // }
-      let expr = `${
-        (a[index]!==undefined)?a[index]:0
-      } + ${
-        (b[index]!==undefined)?b[index]:0
-      } + ${carry}`;
-      rest = sum % base;
-      carry = ( sum - rest ) / base;
-      result.numbers[index] = rest;
-      result.intermediate.push({
-        sum, rest, carry,
-        expr
-      })
-      index++;
+    let b = ( (n instanceof BigNumber) ? n : new BigNumber(n)).numbers;
+    let result = new BigNumber();
+    for(let index = 0;a[index] !== undefined
+          || b[index] !== undefined;
+      index++) {
+      result.numbers[index] = ((a[index]!==undefined)?a[index]:0) + ((b[index]!==undefined)?b[index]:0)
     }
-    // if(carry != 0) {
-    //   result.numbers[index] = carry;
-    // }
+    result.normalize();
     return result;
   }
   shift( n: number): this {
@@ -83,46 +46,53 @@ export class BigNumber{
     while(n--)this.numbers.shift();
     return this;
   }
-  public mul( n: number): BigNumber {
+  private _multiply(n: number) {
     let a = this.numbers;
-    let b = new BigNumber(n).numbers;
-    let result = new BigNumber(n);
-    let carry = 0;
-    let base = BIG_NUMBER_BASE;
-    let rest = 0;
-    let prod = 0;
-    let index = 0;
-    while(
-        (
-          carry !== 0
-          || a[index] !== undefined
-          || b[index] !== undefined
-        )
-    ) {
-      // prod = ((a[index]!==undefined)?a[index]:1)
-      //   * ((b[index]!==undefined)?b[index]:1)
-      //   + carry;
-      if( a[index] ) {
-        if( b[index] ) {
-          prod = a[index] * b[index] + carry;
-        } else {
-          prod = a[index] + carry;
-        } 
-      } else {
-        if( b[index] ) {
-          prod = b[index] + carry;
-        } else {
-          prod = carry;
-        }
-      }
-      rest = prod % base;
-      carry = ( prod - rest ) / base;
-      result.numbers[index] = rest;
-      index++;
+    let result = new BigNumber();
+    for(let index = 0;a[index] !== undefined;
+      index++) {
+      result.numbers[index] = ((a[index]!==undefined)? a[index]* n: 0 )
     }
-    if( carry != 0) {
-      result.numbers[index] = carry;
+    result.normalize();
+    return result;
+  }
+  public mul(factor: number | BigNumber): BigNumber {
+    let a = this.numbers;
+    let n = (factor instanceof BigNumber) ? factor : new BigNumber(factor);
+    let results = new Array<BigNumber>();
+    for( let i = 0; i < a.length; i++) {
+      results.push( n._multiply(a[i]).shift(i) )
+    }
+    let result = results.reduce( (a,v) => {
+      a=a.add(v);
+      return a;
+    }, new BigNumber() );
+    result.normalize();
+    return result;
+  }
+  public pow( n: number): BigNumber {
+    const factor = this.clone();
+    let result = new BigNumber(1);
+    for(let i=0;i<n;i++){
+      result = result.mul(factor)
     }
     return result;
+  }
+  public normalize(){
+    const n = [...this.numbers];
+    this.numbers = [];
+    let rest = 0;
+    let carry = 0;
+    let i = 0;
+    while ( i < n.length || carry !== 0 ) {
+      let val = ((n[i]!==undefined)?n[i]:0) + carry;
+      rest = val % BIG_NUMBER_BASE;
+      carry = ( val - rest ) / BIG_NUMBER_BASE;
+      this.numbers.push(rest);
+      i++;
+    }
+    if( carry != 0) {
+      this.numbers[i] = carry;
+    }
   }
 }
