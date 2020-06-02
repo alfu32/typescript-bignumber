@@ -5,7 +5,7 @@ import { BigNumber } from './BigNumber';
 let tests = [
   function testtestFromString() {
     let str = '111';
-    let result = BigNumber.fromString(555666777888);
+    let result = BigNumber.fromString(str);
     return result;
   },
   function testAdd() {
