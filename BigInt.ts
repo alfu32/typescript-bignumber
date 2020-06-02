@@ -6,7 +6,7 @@ export class BigInt{
   public numbers: Array<number> = new Array<number>();
   intermediate: Array<any> = [];
   public static fromString(s: string) {
-    return s.split(/`[0-9]{3}/gi);
+    return s.match(/.{1,3}/gi);
     let result = new BigInt();
     result.numbers = s.split(/.{9}/gi).map( v => parseInt(v) );
     return result;
