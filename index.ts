@@ -41,8 +41,9 @@ let tests = [
     return result;
   },
   function testPow() {
-    let result = new BigInt(2);
-    result = result.pow(1000);
+    let str = '111222333444555666';
+    let result = BigInt.fromString(str);
+    result = result.pow(3);
     return result;
   }
 ]
