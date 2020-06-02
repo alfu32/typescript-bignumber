@@ -6,6 +6,7 @@ export class BigNumber{
     n.numbers = [...this.numbers];
     return n;
   }
+  https://www.acceptance.cc.cec/archibus/schema/ab-core/views/process-navigator/navigator-details.axvw?ticket=ST-25468630-jo84fYsL3tWwHsbzqYnOA1QNXN6sho4F4rHNzkp5ngKi4C7U2BDVPuCm6XWsE4SU54Is1mLbhXJn9jAPjgf3Fq-jpJZscgsw0KzTP3jULmpbl-ttq4cvlIrCY3E1rTCpzmWomqPapbl4bhzdtjn1lznOIwZakeipp1YjSwNvr3LWzY1eLUG7QBCIHaIlOUPhPZsaa
   public assign(value: number){
     let v = value;
     const b = this.base;
