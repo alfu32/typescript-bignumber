@@ -5,6 +5,12 @@ export class BigNumber{
   public base = BIG_NUMBER_BASE;
   public numbers: Array<number> = new Array<number>();
   intermediate: Array<any> = [];
+  public static fromString(s: string) {
+    let result = new BigNumber();
+    result.numbers = s.split(/.{9}/gi).map( v => parseInt(v) );
+    result.normalize();
+    return result;
+  }
   public clone(): BigNumber{
     const n = new BigNumber(0);
     n.numbers = [...this.numbers];
