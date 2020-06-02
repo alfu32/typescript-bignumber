@@ -3,6 +3,11 @@ import './style.css';
 import { BigNumber } from './BigNumber';
 
 let tests = [
+  function testtestFromString() {
+    let str = '111222333444555';
+    let result = BigNumber.fromString(555666777888);
+    return result;
+  },
   function testAdd() {
     let result = new BigNumber(555666777888);
     result = result.add(444333222112);
