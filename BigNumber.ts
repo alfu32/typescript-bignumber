@@ -31,10 +31,53 @@ export class BigNumber{
     let rest = 0;
     let sum = 0;
     let index = 0;
-    while( rest !== 0 || carry !== 0 || a[index] !== undefined || b[index] !== undefined ) {
+    while (
+        rest !== 0
+        || carry !== 0
+        || a[index] !== undefined
+        || b[index] !== undefined
+      ) {
       if( a[index] ) {
         if( b[index] ) {
           sum = a[index] + b[index] + carry;
+        } else {
+          sum = a[index] + carry;
+        } 
+      } else {
+        if( b[index] ) {
+          sum = b[index] + carry;
+        } else {
+          sum = carry;
+        }
+      }
+      rest = sum % base;
+      carry = ( sum - rest ) / base;
+      result[index] = rest;
+      index++;
+    }
+    if( carry != 0) {
+      result[index] = carry;
+    }
+  }
+  public mul( n: number) {
+    let a = this.numbers;
+    let result = new BigNumber(n);
+    let b = result.numbers;
+    result = new BigNumber(n);
+    let carry = 0;
+    let base = this.base;
+    let rest = 0;
+    let sum = 0;
+    let index = 0;
+    while(
+      rest !== 0
+      || carry !== 0
+      || a[index] !== undefined
+      || b[index] !== undefined
+    ) {
+      if( a[index] ) {
+        if( b[index] ) {
+          sum = a[index] * b[index] + carry;
         } else {
           sum = a[index] + carry;
         } 
