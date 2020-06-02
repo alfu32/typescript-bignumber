@@ -1,4 +1,4 @@
-export const BIGINT_BASE = 256;
+export const BIGINT_BASE = 1000;
 
 export class BigInt{
 
