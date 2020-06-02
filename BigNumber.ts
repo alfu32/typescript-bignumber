@@ -70,6 +70,30 @@ export class BigNumber{
     result.normalize();
     return result;
   }
+  private _divide(n: number) {
+    let a = this.numbers;
+    let result = new BigNumber();
+    for(let index = 0;a[index] !== undefined;
+      index++) {
+      result.numbers[index] = ((a[index]!==undefined)? a[index]* n: 0 )
+    }
+    result.normalize();
+    return result;
+  }
+  public div(factor: number | BigNumber): BigNumber {
+    let a = this.numbers;
+    let n = (factor instanceof BigNumber) ? factor : new BigNumber(factor);
+    let results = new Array<BigNumber>();
+    for( let i = 0; i < a.length; i++) {
+      results.push( n._multiply(a[i]).shift(i) )
+    }
+    let result = results.reduce( (a,v) => {
+      a=a.add(v);
+      return a;
+    }, new BigNumber() );
+    result.normalize();
+    return result;
+  }
   public pow( n: number): BigNumber {
     const factor = this.clone();
     let result = new BigNumber(1);
