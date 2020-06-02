@@ -3,7 +3,7 @@ import './style.css';
 import { BigInt } from './BigInt';
 
 let tests = [
-  function testtestFromString() {
+  function testFromString() {
     let str = '111222';
     let result = BigInt.fromString(str);
     return result;
