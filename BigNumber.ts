@@ -14,10 +14,12 @@ export class BigNumber{
       this.numbers.unshift(v % b);
       v = (v - (v % b)) / b;
     }
+    this.numbers.unshift(v);
   }
   public constructor(n?: number){
-    if( n === undefined)
-    this.assign(n);
+    if( n !== undefined) {
+      this.assign(n);
+    }
   }
   public add( n: number) {
     let a = this;
