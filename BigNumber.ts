@@ -48,6 +48,10 @@ export class BigNumber{
       rest = sum % base;
       carry = ( sum - rest ) / base;
       result[index] = rest;
+      index++;
+    }
+    if( carry != 0) {
+      result[index] = carry;
     }
   }
 }
