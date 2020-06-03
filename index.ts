@@ -15,7 +15,7 @@ let tests = [
   },
   function testSub() {
     let result = new BigInt(555666777888);
-    result = result.add(444000000000000);
+    result = result.add(-889);
     return result;
   },
   function testAdd2() {
