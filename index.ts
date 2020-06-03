@@ -13,6 +13,11 @@ let tests = [
     result = result.add(444333222112);
     return result;
   },
+  function testSub() {
+    let result = new BigInt(555666777888);
+    result = result.add(444000000000000);
+    return result;
+  },
   function testAdd2() {
     let result = new BigInt(777888999);
     result = result.add(1);
