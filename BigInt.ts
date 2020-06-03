@@ -4,6 +4,7 @@ export class BigInt{
 
   public base = BIGINT_BASE;
   public numbers: Array<number> = new Array<number>();
+  public commaIndex = 0;
   intermediate: Array<any> = [];
   public static fromString(s: string) {
     let result = new BigInt();
@@ -81,10 +82,10 @@ export class BigInt{
     let n = (factor instanceof BigInt) ? factor : new BigInt(factor);
     let results = new Array<BigInt>();
     for( let i = 0; i < a.length; i++) {
-      results.push( n._multiply(a[i]).shift(i) )
+      results.push( n._multiply(a[i], false).shift(i) )
     }
     let result = results.reduce( (a,v) => {
-      a=a.add(v);
+      a=a.add(v, false);
       return a;
     }, new BigInt() );
     if(normalize){

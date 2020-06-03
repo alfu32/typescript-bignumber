@@ -40,6 +40,13 @@ let tests = [
     result = result.mul(new BigInt(65536) );
     return result;
   },
+  function testMul2() {
+    let result = new BigInt(2);
+    result = result.mul( 1000 );
+    result = result.mul(new BigInt(1000) );
+    result = result.mul(new BigInt(1000) );
+    return result;
+  },
   function testPow() {
     let str = '111222333444555666';
     let result = BigInt.fromString(str);
