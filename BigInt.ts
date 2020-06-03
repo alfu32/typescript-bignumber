@@ -12,6 +12,15 @@ export class BigInt{
     result.normalize();
     return result;
   }
+  public toString() {
+    let carry = 0;
+    this.numbers.reduce(
+      (acc,v)=>{
+        let val = BIGINT_BASE * v + carry
+        return acc;
+      }, '',
+    )
+  }
   public clone(): BigInt{
     const n = new BigInt(0);
     n.numbers = [...this.numbers];
