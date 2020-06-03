@@ -41,7 +41,7 @@ export class BigInt{
       this.assign(n);
     }
   }
-  public add( n: number | BigInt): BigInt {
+  public add( n: number | BigInt, normalize: boolean = true): BigInt {
     let a = this.numbers;
     let b = ( (n instanceof BigInt) ? n : new BigInt(n)).numbers;
     let result = new BigInt();
@@ -50,7 +50,9 @@ export class BigInt{
       index++) {
       result.numbers[index] = ((a[index]!==undefined)?a[index]:0) + ((b[index]!==undefined)?b[index]:0)
     }
-    result.normalize();
+    if(normalize){
+      result.normalize();
+    }
     return result;
   }
   shift( n: number): this {
@@ -62,17 +64,19 @@ export class BigInt{
     while(n--)this.numbers.shift();
     return this;
   }
-  private _multiply(n: number) {
+  private _multiply(n: number, normalize: boolean = true) {
     let a = this.numbers;
     let result = new BigInt();
     for(let index = 0;a[index] !== undefined;
       index++) {
       result.numbers[index] = ((a[index]!==undefined)? a[index]* n: 0 )
     }
-    result.normalize();
+    if(normalize){
+      result.normalize();
+    }
     return result;
   }
-  public mul(factor: number | BigInt): BigInt {
+  public mul(factor: number | BigInt, normalize: boolean = true): BigInt {
     let a = this.numbers;
     let n = (factor instanceof BigInt) ? factor : new BigInt(factor);
     let results = new Array<BigInt>();
@@ -83,20 +87,24 @@ export class BigInt{
       a=a.add(v);
       return a;
     }, new BigInt() );
-    result.normalize();
+    if(normalize){
+      result.normalize();
+    }
     return result;
   }
-  private _divide(n: number) {
+  private _divide(n: number, normalize: boolean = true) {
     let a = this.numbers;
     let result = new BigInt();
     for(let index = 0;a[index] !== undefined;
       index++) {
       result.numbers[index] = ((a[index]!==undefined)? a[index]* n: 0 )
     }
-    result.normalize();
+    if(normalize){
+      result.normalize();
+    }
     return result;
   }
-  public div(factor: number | BigInt): BigInt {
+  public div(factor: number | BigInt, normalize: boolean = true): BigInt {
     let a = this.numbers;
     let n = (factor instanceof BigInt) ? factor : new BigInt(factor);
     let results = new Array<BigInt>();
@@ -107,10 +115,12 @@ export class BigInt{
       a=a.add(v);
       return a;
     }, new BigInt() );
-    result.normalize();
+    if(normalize){
+      result.normalize();
+    }
     return result;
   }
-  public pow( n: number): BigInt {
+  public pow( n: number, normalize: boolean = true): BigInt {
     const factor = this.clone();
     let result = new BigInt(1);
     for(let i=0;i<n;i++){
