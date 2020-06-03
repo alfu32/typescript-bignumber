@@ -70,7 +70,7 @@ export class BigInt{
     let result = new BigInt();
     for(let index = 0;a[index] !== undefined;
       index++) {
-      result.numbers[index] = ((a[index]!==undefined)? a[index]* n: 0 )
+      result.numbers[index] = a[index]* n;
     }
     if(normalize){
       result.normalize();
@@ -96,26 +96,30 @@ export class BigInt{
   private _divide(n: number, normalize: boolean = true) {
     let a = this.numbers;
     let result = new BigInt();
-    for(let index = 0;a[index] !== undefined;
-      index++) {
-      result.numbers[index] = ((a[index]!==undefined)? a[index]* n: 0 )
+    let rest = 0;
+    for(let index = a.length - 1;a[index] !== undefined;
+      index--) {
+      let current = ((a[index]!==undefined)? a[index]: 0 ) + rest * BIGINT_BASE;
+      rest = current % BIGINT_BASE;
+      result.numbers[index] = ( current - rest ) / BIGINT_BASE;
     }
     if(normalize){
       result.normalize();
     }
-    return result;
+    return {result,rest};
   }
   public div(factor: number | BigInt, normalize: boolean = true): BigInt {
     let a = this.numbers;
     let n = (factor instanceof BigInt) ? factor : new BigInt(factor);
     let results = new Array<BigInt>();
-    for( let i = 0; i < a.length; i++) {
-      results.push( n._multiply(a[i]).shift(i) )
+    let result = new BigInt();
+    let rest = 0;
+    for(let index = a.length - 1;a[index] !== undefined;
+      index--) {
+      let current = ((a[index]!==undefined)? a[index]: 0 ) + rest * BIGINT_BASE;
+      rest = current % BIGINT_BASE;
+      result.numbers[index] = ( current - rest ) / BIGINT_BASE;
     }
-    let result = results.reduce( (a,v) => {
-      a=a.add(v);
-      return a;
-    }, new BigInt() );
     if(normalize){
       result.normalize();
     }
